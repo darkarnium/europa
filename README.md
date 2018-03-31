@@ -9,11 +9,11 @@ This repository contains the API service for the Europa project.
 A sample override configuration file for the Europa API.
 
 ```
-DEBUG=False,
-TESTING=False,
-JSON_AS_ASCII=False,
-SQLALCHEMY_DATABASE_URI='postgresql://europa:pass@127.0.0.1/europa',
-SQLALCHEMY_TRACK_MODIFICATIONS=False,
+DEBUG=False
+TESTING=False
+JSON_AS_ASCII=False
+SQLALCHEMY_DATABASE_URI='postgresql://europa:pass@127.0.0.1/europa'
+SQLALCHEMY_TRACK_MODIFICATIONS=False
 ```
 
 #### `europa-poller.service`
@@ -50,7 +50,7 @@ After=syslog.target
 Type=simple
 User=europa
 WorkingDirectory=/opt/europa-api
-ExecStart=/usr/bin/python3 /opt/europa-api/src/application.py
+ExecStart=/usr/bin/python3 /opt/europa-api/src/application.py /opt/europa-api/api.cfg
 StandardOutput=syslog
 StandardError=syslog
 
