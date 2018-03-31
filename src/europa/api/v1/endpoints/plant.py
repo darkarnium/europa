@@ -1,4 +1,4 @@
-''' Version 1 Vessel endpoints of the Europa project API. '''
+''' Version 1 Plant endpoints of the Europa project API. '''
 
 import datetime
 import sqlalchemy
@@ -76,7 +76,7 @@ def retrieve_plant(plant_id):
 @router.route('/plant/<int:plant_id>', methods=['PUT'])
 @decorators.validated(fields=['name', 'description', 'vessel'], optional=True)
 def update_plant(plant_id):
-    ''' Attempt to update a given vessel. '''
+    ''' Attempt to update a given plant. '''
     candidate = Plant.query.filter(
         Plant.id == plant_id,
     ).first_or_404()

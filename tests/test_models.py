@@ -13,12 +13,11 @@ from europa.models import VesselSize
 from europa.models import Plant
 from europa.models import Sensor
 from europa.models import SensorData
-from europa.models import SensorUnits
 from europa.models import SensorCategory
 
 
-class EuropaModelTestCase(unittest.TestCase):
-    ''' Defines tests for Europa Models. '''
+class EuropaApiTestCase(unittest.TestCase):
+    ''' Defines tests for Europa APi=I. '''
 
     def setUp(self):
         ''' Ensure the application, and database, is setup for testing. '''
@@ -44,6 +43,31 @@ class EuropaModelTestCase(unittest.TestCase):
                 description='Some Description',
             )
             db.session.add(plant)
+
+            # Seed the database with a valid sensor category.
+            sensor_category = SensorCategory(
+                id=1337,
+                name=str(uuid.uuid4()),
+                units='Boolean',
+            )
+            db.session.add(sensor_category)
+
+            # Seed the database with a valid sensor.
+            sensor = Sensor(
+                id=1337,
+                name=str(uuid.uuid4()),
+                vessel_id=1337,
+                category_id=1337,
+            )
+            db.session.add(sensor)
+
+            # Seed the database with valid sensor data.
+            sensor_data = SensorData(
+                id=1337,
+                value=1,
+                sensor_id=1337,
+            )
+            db.session.add(sensor_data)
 
             # Create the test database and save fixtures.
             db.create_all()
@@ -154,6 +178,127 @@ class EuropaModelTestCase(unittest.TestCase):
             content_type='application/json',
         )
         assert response.status_code == 204
+
+    def test_create_sensor(self):
+        ''' Ensures that a sensor can be created via the API. '''
+        payload = json.dumps({
+            'name': str(uuid.uuid4()),
+            'category': 1337,
+            'vessel': 1337,
+        })
+        response = self.client.post(
+            '/v1/sensor',
+            data=payload,
+            content_type='application/json',
+        )
+        assert response.status_code == 201
+
+    def test_retrieve_sensors(self):
+        ''' Ensures that sensors can be retrieved via the API. '''
+        response = self.client.get(
+            '/v1/sensors',
+            content_type='application/json',
+        )
+        assert response.status_code == 200
+
+    def test_retrieve_sensor(self):
+        ''' Ensures that a specific sensor can be retrieved via the API. '''
+        response = self.client.get(
+            '/v1/sensor/1337',
+            content_type='application/json',
+        )
+        assert response.status_code == 200
+
+    def test_update_sensor(self):
+        ''' Ensures that a specified sensor can be updated via the API. '''
+        payload = json.dumps({
+            'name': str(uuid.uuid4()),
+            'category': 1337,
+        })
+        response = self.client.put(
+            '/v1/sensor/1337',
+            data=payload,
+            content_type='application/json',
+        )
+        assert response.status_code == 204
+
+    def test_delete_sensor(self):
+        ''' Ensures that a specific sensor can be deleted via the API. '''
+        response = self.client.delete(
+            '/v1/sensor/1337',
+            content_type='application/json',
+        )
+        assert response.status_code == 204
+
+    def test_create_sensor_category(self):
+        ''' Ensures that a sensor category can be created via the API. '''
+        payload = json.dumps({
+            'name': str(uuid.uuid4()),
+            'units': 'Degrees',
+        })
+        response = self.client.post(
+            '/v1/sensor/category',
+            data=payload,
+            content_type='application/json',
+        )
+        assert response.status_code == 201
+
+    def test_retrieve_sensor_categories(self):
+        ''' Ensures that sensors category can be retrieved via the API. '''
+        response = self.client.get(
+            '/v1/sensor/categories',
+            content_type='application/json',
+        )
+        assert response.status_code == 200
+
+    def test_retrieve_sensor_category(self):
+        ''' Ensures that a specific sensor category can be retrieved via the API. '''
+        response = self.client.get(
+            '/v1/sensor/category/1337',
+            content_type='application/json',
+        )
+        assert response.status_code == 200
+
+    def test_update_sensor_category(self):
+        ''' Ensures that a specified sensor category can be updated via the API. '''
+        payload = json.dumps({
+            'name': str(uuid.uuid4()),
+            'units': 'Boolean',
+        })
+        response = self.client.put(
+            '/v1/sensor/category/1337',
+            data=payload,
+            content_type='application/json',
+        )
+        assert response.status_code == 204
+
+    def test_delete_sensor_category(self):
+        ''' Ensures that a specific sensor category can be deleted via the API. '''
+        response = self.client.delete(
+            '/v1/sensor/category/1337',
+            content_type='application/json',
+        )
+        assert response.status_code == 204
+
+    def test_create_sensor_data(self):
+        ''' Ensures that sensor data can be added via the API. '''
+        payload = json.dumps({
+            'value': 100.00,
+        })
+        response = self.client.post(
+            '/v1/sensor/1337/data',
+            data=payload,
+            content_type='application/json',
+        )
+        assert response.status_code == 201
+
+    def test_retrieve_sensor_data(self):
+        ''' Ensures that sensor data can be retrieved via the API. '''
+        response = self.client.get(
+            '/v1/sensor/1337/data',
+            content_type='application/json',
+        )
+        assert response.status_code == 200
 
 if __name__ == '__main__':
     unittest.main()

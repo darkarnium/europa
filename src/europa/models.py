@@ -30,21 +30,6 @@ class VesselSize(enum.Enum):
     POT_TWELVE_CM = '12CM Plant Pot'
 
 
-class SensorCategory(enum.Enum):
-    ''' Define supported types for the Sensor Category type. '''
-    TEMPERATURE_AMBIENT = 'Ambient Temperature Sensor'
-    TEMPERATURE_SOIL = 'Soil Temperature Sensor'
-    HUMIDITY_AMBIENT = 'Ambient Humidity Sensor'
-    MOISTURE_SOIL = 'Soil Moisture Sensor'
-
-
-class SensorUnits(enum.Enum):
-    ''' Define supported types for the Sensor Units type. '''
-    DEGREES = 'Degrees'
-    BOOLEAN = 'Boolean (On / Off)'
-    PERCENT = 'Percent'
-
-
 class Vessel(db.Model):
     ''' Implements the Vessels model for Europa. '''
     id = db.Column(db.Integer, primary_key=True)
@@ -104,22 +89,59 @@ class Sensor(db.Model):
     ''' Implements the Sensors model for Europa. '''
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), unique=False, nullable=False)
-    category = db.Column(db.Enum(SensorCategory), nullable=False)
-    units = db.Column(db.Enum(SensorUnits), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('sensor_category.id'), nullable=False)
     vessel_id = db.Column(db.Integer, db.ForeignKey('vessel.id'), nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     deleted = db.Column(db.DateTime)
 
     # Map the reverse for the relationship.
     vessel = db.relationship('Vessel', backref='sensors')
+    category = db.relationship('SensorCategory', backref='sensors')
+
+    def for_json(self):
+        ''' Provide a result in a JSON serializable format. '''
+        return {
+            'id': self.id,
+            'name': self.name,
+            'category': self.category.name,
+            'vessel': self.vessel.name,
+            'created': from_datetime(self.created),
+            'deleted': from_datetime(self.deleted),
+        }
+
+
+class SensorCategory(db.Model):
+    ''' Implements the Sensor Category model for Europa. '''
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), unique=False, nullable=False)
+    units = db.Column(db.String(100), nullable=False)
+    created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    deleted = db.Column(db.DateTime)
+
+    def for_json(self):
+        ''' Provide a result in a JSON serializable format. '''
+        return {
+            'id': self.id,
+            'name': self.name,
+            'units': self.units,
+            'created': from_datetime(self.created),
+            'deleted': from_datetime(self.deleted),
+        }
 
 
 class SensorData(db.Model):
     ''' Implements the Sensors Data model for Europa. '''
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     value = db.Column(db.Float, nullable=False)
     sensor_id = db.Column(db.Integer, db.ForeignKey('sensor.id'), nullable=False)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     # Map the reverse for the relationship.
-    sensor = db.relationship('Sensor', backref='data_points')
+    sensor = db.relationship('Sensor', backref='data')
+
+    def for_json(self):
+        ''' Provide a result in a JSON serializable format. '''
+        return {
+            'value': self.value,
+            'created': from_datetime(self.created),
+        }
