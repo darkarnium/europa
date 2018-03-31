@@ -1,7 +1,15 @@
 ''' The Europa project. '''
+
+import sys
 import europa
 
-application = europa.initialize_all()
+config_file = None
+if len(sys.argv) > 1:
+    config_file = sys.argv[1]
+
+# Load the configuration, if provided.
+application = europa.initialize_all(config_file=config_file)
+
 
 if __name__ == '__main__':
     with application.app_context():
