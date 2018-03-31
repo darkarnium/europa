@@ -9,4 +9,4 @@ if __name__ == '__main__':
         db.create_all()
 
     # Run.
-    application.run(debug=True)
+    application.run(debug=False)

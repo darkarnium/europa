@@ -23,7 +23,7 @@ API_AMBIENT_HUMIDITY = 3
 API_AMBIENT_TEMPERATURE = 4
 
 # Define API endpoint.
-API_BASE_URI = 'http://127.0.0.1:9000/v1'
+API_BASE_URI = 'http://127.0.0.1:5000/v1'
 
 
 def get_ambient_all():
@@ -57,9 +57,9 @@ def get_soil_moisture_state():
 
     # Change the output from Boolean to Binary.
     if GPIO.input(SENSOR_PIN_SOIL):
-        return 1.0
-    else:
         return 0.0
+    else:
+        return 1.0
 
 
 def post_sensor_data(api_sensor_id, value):
