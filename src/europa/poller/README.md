@@ -66,6 +66,13 @@ curl \
   -d '{"name": "Humidity", "units": "%"}' \
   http://127.0.0.1:5000/v1/sensor/category
 
+# Setup a new external output category.
+curl \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "Device", "units": "Is Active"}' \
+  http://127.0.0.1:5000/v1/sensor/category
+
 # Setup a new Soil Moisture sensor.
 curl \
   -X POST \
@@ -93,4 +100,22 @@ curl \
   -H 'Content-Type: application/json' \
   -d '{"name": "Ambient", "category": 1, "vessel": 1}' \
   http://127.0.0.1:5000/v1/sensor
+
+# Setup a new external light sensor.
+curl \
+  -X POST \
+  -H 'Content-Type: application/json' \
+  -d '{"name": "Light", "category": 4, "vessel": 1}' \
+  http://127.0.0.1:5000/v1/sensor
 ```
+
+### References
+
+#### TDDP (TP-Link Device Debug Protocol)
+
+The integration with the TP-Link smartplug was performed using the results of
+research performed by Lubomir Stroetmann and Tobias Esser. The `encryption` and
+`decryption` routines were copied directly from their PoC, which can be found
+from the below website.
+
+  * https://www.softscheck.com/en/reverse-engineering-tp-link-hs110/
