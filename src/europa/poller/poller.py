@@ -1,5 +1,6 @@
 import os
 import time
+import json
 import socket
 import requests
 import datetime
@@ -89,9 +90,6 @@ def main():
         format='%(asctime)s - %(process)d - [%(levelname)s] %(message)s'
     )
     log = logging.getLogger(__name__)
-
-    # Print external sensor IPs.
-    log.info('External light sensor configured as IP %s', SENSOR_IP_LIGHT)
 
     # Print GPIO pinout.
     log.info('Soil sensor configured as GPIO pin %s', SENSOR_PIN_SOIL)
