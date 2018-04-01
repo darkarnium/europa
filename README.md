@@ -1,6 +1,6 @@
-## Europa API
+## Europa
 
-This repository contains the API service for the Europa project.
+This repository contains the API and UI service for the Europa project.
 
 ### What is it?
 
@@ -21,7 +21,7 @@ This project has been built with the following equipment:
 
 In order to populate the API with data from sensors, some form of poller is
 required. For completeness, a sample poller has been included in this repository
-with additional information available under `src/europa/poller/README.md`.
+with additional information available under `src/poller/README.md`.
 
 ### API Security.
 
@@ -32,7 +32,7 @@ There isn't any. It's a free for all!
 #### `poller.py`
 
 As above, a sample poller has been included. Please see the `poller` directory
-under `src/europa` for additional information.
+under `src/` for additional information.
 
 #### `europa-api.cfg`
 
@@ -69,7 +69,7 @@ After=syslog.target
 Type=simple
 User=root
 WorkingDirectory=/tmp/
-ExecStart=/usr/bin/python3 /opt/europa-api/src/europa/poller/poller.py
+ExecStart=/usr/bin/python3 /opt/europa-api/src/poller/poller.py
 StandardOutput=syslog
 StandardError=syslog
 

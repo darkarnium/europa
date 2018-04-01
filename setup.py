@@ -1,3 +1,4 @@
+import glob
 from setuptools import find_packages, setup, Command
 
 setup(
@@ -8,6 +9,7 @@ setup(
     author_email='peter.adkins@kernelpicnic.net',
     url='https://www.github.com/darkarnium/europa',
     packages=find_packages('src'),
+    include_package_data=True,
     package_dir={
         'europa': 'src/europa',
     },

@@ -30,7 +30,7 @@ API_AMBIENT_TEMPERATURE = 4
 API_LIGHT_STATE = 5
 
 # Define API endpoint.
-API_BASE_URI = 'http://127.0.0.1:5000/v1'
+API_BASE_URI = 'http://127.0.0.1:5000/api/v1'
 
 
 def get_ambient_all():

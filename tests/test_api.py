@@ -86,7 +86,7 @@ class EuropaApiTestCase(unittest.TestCase):
             'location': 'Some New Location'
         })
         response = self.client.post(
-            '/v1/vessel',
+            '/api/v1/vessel',
             data=payload,
             content_type='application/json',
         )
@@ -95,7 +95,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_retrieve_vessels(self):
         ''' Ensures that vessels can be retrieved via the API. '''
         response = self.client.get(
-            '/v1/vessel',
+            '/api/v1/vessel',
             content_type='application/json',
         )
         assert response.status_code == 200
@@ -103,7 +103,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_retrieve_vessel(self):
         ''' Ensures that a specific vessel can be retrieved via the API. '''
         response = self.client.get(
-            '/v1/vessel/1337',
+            '/api/v1/vessel/1337',
             content_type='application/json',
         )
         assert response.status_code == 200
@@ -115,7 +115,7 @@ class EuropaApiTestCase(unittest.TestCase):
             'location': 'Some Updated Location',
         })
         response = self.client.put(
-            '/v1/vessel/1337',
+            '/api/v1/vessel/1337',
             data=payload,
             content_type='application/json',
         )
@@ -124,7 +124,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_delete_vessel(self):
         ''' Ensures that a specific vessel can be deleted via the API. '''
         response = self.client.delete(
-            '/v1/vessel/1337',
+            '/api/v1/vessel/1337',
             content_type='application/json',
         )
         assert response.status_code == 204
@@ -137,7 +137,7 @@ class EuropaApiTestCase(unittest.TestCase):
             'description': 'Some Description'
         })
         response = self.client.post(
-            '/v1/plant',
+            '/api/v1/plant',
             data=payload,
             content_type='application/json',
         )
@@ -146,7 +146,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_retrieve_plants(self):
         ''' Ensures that plants can be retrieved via the API. '''
         response = self.client.get(
-            '/v1/plants',
+            '/api/v1/plants',
             content_type='application/json',
         )
         assert response.status_code == 200
@@ -154,7 +154,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_retrieve_plant(self):
         ''' Ensures that a specific plant can be retrieved via the API. '''
         response = self.client.get(
-            '/v1/plant/1337',
+            '/api/v1/plant/1337',
             content_type='application/json',
         )
         assert response.status_code == 200
@@ -166,7 +166,7 @@ class EuropaApiTestCase(unittest.TestCase):
             'description': 'Some Updated Description',
         })
         response = self.client.put(
-            '/v1/plant/1337',
+            '/api/v1/plant/1337',
             data=payload,
             content_type='application/json',
         )
@@ -175,7 +175,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_delete_plant(self):
         ''' Ensures that a specific plant can be deleted via the API. '''
         response = self.client.delete(
-            '/v1/plant/1337',
+            '/api/v1/plant/1337',
             content_type='application/json',
         )
         assert response.status_code == 204
@@ -188,7 +188,7 @@ class EuropaApiTestCase(unittest.TestCase):
             'vessel': 1337,
         })
         response = self.client.post(
-            '/v1/sensor',
+            '/api/v1/sensor',
             data=payload,
             content_type='application/json',
         )
@@ -197,7 +197,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_retrieve_sensors(self):
         ''' Ensures that sensors can be retrieved via the API. '''
         response = self.client.get(
-            '/v1/sensors',
+            '/api/v1/sensors',
             content_type='application/json',
         )
         assert response.status_code == 200
@@ -205,7 +205,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_retrieve_sensor(self):
         ''' Ensures that a specific sensor can be retrieved via the API. '''
         response = self.client.get(
-            '/v1/sensor/1337',
+            '/api/v1/sensor/1337',
             content_type='application/json',
         )
         assert response.status_code == 200
@@ -217,7 +217,7 @@ class EuropaApiTestCase(unittest.TestCase):
             'category': 1337,
         })
         response = self.client.put(
-            '/v1/sensor/1337',
+            '/api/v1/sensor/1337',
             data=payload,
             content_type='application/json',
         )
@@ -226,7 +226,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_delete_sensor(self):
         ''' Ensures that a specific sensor can be deleted via the API. '''
         response = self.client.delete(
-            '/v1/sensor/1337',
+            '/api/v1/sensor/1337',
             content_type='application/json',
         )
         assert response.status_code == 204
@@ -238,7 +238,7 @@ class EuropaApiTestCase(unittest.TestCase):
             'units': 'Degrees',
         })
         response = self.client.post(
-            '/v1/sensor/category',
+            '/api/v1/sensor/category',
             data=payload,
             content_type='application/json',
         )
@@ -247,7 +247,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_retrieve_sensor_categories(self):
         ''' Ensures that sensors category can be retrieved via the API. '''
         response = self.client.get(
-            '/v1/sensor/categories',
+            '/api/v1/sensor/categories',
             content_type='application/json',
         )
         assert response.status_code == 200
@@ -255,7 +255,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_retrieve_sensor_category(self):
         ''' Ensures that a specific sensor category can be retrieved via the API. '''
         response = self.client.get(
-            '/v1/sensor/category/1337',
+            '/api/v1/sensor/category/1337',
             content_type='application/json',
         )
         assert response.status_code == 200
@@ -267,7 +267,7 @@ class EuropaApiTestCase(unittest.TestCase):
             'units': 'Boolean',
         })
         response = self.client.put(
-            '/v1/sensor/category/1337',
+            '/api/v1/sensor/category/1337',
             data=payload,
             content_type='application/json',
         )
@@ -276,7 +276,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_delete_sensor_category(self):
         ''' Ensures that a specific sensor category can be deleted via the API. '''
         response = self.client.delete(
-            '/v1/sensor/category/1337',
+            '/api/v1/sensor/category/1337',
             content_type='application/json',
         )
         assert response.status_code == 204
@@ -288,7 +288,7 @@ class EuropaApiTestCase(unittest.TestCase):
             'created': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S'),
         })
         response = self.client.post(
-            '/v1/sensor/1337/data',
+            '/api/v1/sensor/1337/data',
             data=payload,
             content_type='application/json',
         )
@@ -297,7 +297,7 @@ class EuropaApiTestCase(unittest.TestCase):
     def test_retrieve_sensor_data(self):
         ''' Ensures that sensor data can be retrieved via the API. '''
         response = self.client.get(
-            '/v1/sensor/1337/data',
+            '/api/v1/sensor/1337/data',
             content_type='application/json',
         )
         assert response.status_code == 200
