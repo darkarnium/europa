@@ -7,6 +7,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 from europa import api
+from europa import static
 from europa import models
 
 
@@ -14,6 +15,7 @@ def initialize_all(config_file=None):
     ''' Initialize the main Europa application. '''
     application = Flask(__name__)
     application.register_blueprint(api.v1.router, url_prefix='/v1')
+    application.register_blueprint(static.router)
 
     # If no configuration file is specified, load the testing defaults. If it
     # is, attempt to load the configuration from that file.
