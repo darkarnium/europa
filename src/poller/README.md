@@ -40,62 +40,62 @@ curl \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"name": "pot1", "location": "Kitchen"}' \
-  http://127.0.0.1:5000/v1/vessel
+  http://127.0.0.1:5000/api/v1/vessel
 
 # Setup a new Plant.
 curl \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"name": "Sweet Basil", "vessel": 1, "description": "Left-Most Pot"}' \
-  http://127.0.0.1:5000/v1/plant
+  http://127.0.0.1:5000/api/v1/plant
 
 # Setup a new temperature sensor category.
 curl \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"name": "Temperature", "units": "°C"}' \
-  http://127.0.0.1:5000/v1/sensor/category
+  http://127.0.0.1:5000/api/v1/sensor/category
 
 # Setup a new moisture sensor category.
 curl \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"name": "Moisture", "units": "Is Required"}' \
-  http://127.0.0.1:5000/v1/sensor/category
+  http://127.0.0.1:5000/api/v1/sensor/category
 
 # Setup a new humidity sensor category.
 curl \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"name": "Humidity", "units": "%"}' \
-  http://127.0.0.1:5000/v1/sensor/category
+  http://127.0.0.1:5000/api/v1/sensor/category
 
 # Setup a new Soil Moisture sensor.
 curl \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"name": "Soil", "category": 2, "vessel": 1}' \
-  http://127.0.0.1:5000/v1/sensor
+  http://127.0.0.1:5000/api/v1/sensor
 
 # Setup a new Soil Temperature sensor.
 curl \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"name": "Soil", "category": 1, "vessel": 1}' \
-  http://127.0.0.1:5000/v1/sensor
+  http://127.0.0.1:5000/api/v1/sensor
 
 # Setup a new Ambient Humidity sensor.
 curl \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"name": "Ambient", "category": 3, "vessel": 1}' \
-  http://127.0.0.1:5000/v1/sensor
+  http://127.0.0.1:5000/api/v1/sensor
 
 # Setup a new Ambient Temperature sensor.
 curl \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{"name": "Ambient", "category": 1, "vessel": 1}' \
-  http://127.0.0.1:5000/v1/sensor
+  http://127.0.0.1:5000/api/v1/sensor
 
 ```

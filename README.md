@@ -69,7 +69,7 @@ After=syslog.target
 Type=simple
 User=root
 WorkingDirectory=/tmp/
-ExecStart=/usr/bin/python3 /opt/europa-api/src/poller/poller.py
+ExecStart=/usr/bin/python3 /opt/europa/src/poller/poller.py
 StandardOutput=syslog
 StandardError=syslog
 
@@ -86,7 +86,7 @@ from which sensor data can be retrieved.
 This assumes that this repository has been cloned into `/opt/europa-api` and 
 that there is a user named `europa` which has access to this directory. It also
 assumes that the `europa-api.cfg` sample, listed above, has been written into
-a file called `/opt/europa-api/api.cfg`.
+a file called `/opt/europa/api.cfg`.
 
 ```
 [Unit]
@@ -96,8 +96,8 @@ After=syslog.target
 [Service]
 Type=simple
 User=europa
-WorkingDirectory=/opt/europa-api
-ExecStart=/usr/bin/python3 /opt/europa-api/src/application.py /opt/europa-api/api.cfg
+WorkingDirectory=/opt/europa
+ExecStart=/usr/bin/python3 /opt/europa/src/application.py /opt/europa/api.cfg
 StandardOutput=syslog
 StandardError=syslog
 

@@ -1,31 +1,89 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Europa</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Europa UI</title>
+    <link href="{{ url_for('.static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('.static', filename='css/style.css') }}" rel="stylesheet">
   </head>
 
-  <body class="text-center">
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Europa</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarPrimary" aria-controls="navbarPrimary" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-      <header class="masthead mb-auto">
-        <div class="inner">
-          <h3 class="masthead-brand">Europa</h3>
-          <nav class="nav nav-masthead justify-content-center">
-          </nav>
+      <div class="collapse navbar-collapse" id="navbarPrimary">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <main role="main" class="container">
+
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+          <h3>Sensor History</h3>
+          <div class="btn-toolbar mb-2 mb-md-0"></div>
         </div>
-      </header>
 
-      <main role="main" class="inner cover">
+        <div id='chart-container'></div>
       </main>
-
-      <footer class="mastfoot mt-auto">
-      </footer>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{{ url_for('.static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('.static', filename='js/popper-1.12.9.min.js') }}"></script>
+    <script src="{{ url_for('.static', filename='js/bootstrap-4.0.0.min.js') }}"></script>
+    <script src="{{ url_for('.static', filename='js/chart-2.7.2.min.js') }}"></script>
+
+    <script>
+      $.getJSON("/api/v1/sensors", function(sensors) {
+        
+        // Create a new Chart for each sensor.
+        $.each(sensors, function(idx, entry) {
+          $("#chart-container").append(
+            "<canvas class='my-4' id='chart" + entry['id'] + "' width='900' height='380'></canvas>"
+          );
+
+          // Fetch a stream of data for this sensor.
+          labels = []
+          datapoints = []
+          $.getJSON("/api/v1/sensor/" + entry['id'] + "/data", function(sensor) {
+            $.each(sensor, function(idx, datapoint) {
+              labels.push(new Date(datapoint['created']).toLocaleString())
+              datapoints.push(
+                {
+                  t: new Date(datapoint['created']),
+                  y: datapoint['value']
+                }
+              )
+            });
+          });
+
+          // Initialize the new chart.
+          new Chart(
+            document.getElementById("chart" + entry['id']).getContext("2d"),
+            {
+              type: 'line',
+              data: {
+                labels: labels,
+                datasets: [{
+                  label: entry['vessel'],
+                  fill: true,
+                  data: datapoints
+                }]
+              },
+              options: {
+                responsive: true,
+                title: {
+                  display: true,
+                  text: entry['name'] + " " + entry['category']
+                }
+              }
+            }
+          );
+        });
+      });
+    </script>
   </body>
 </html>
