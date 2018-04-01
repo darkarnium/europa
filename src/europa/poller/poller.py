@@ -2,6 +2,7 @@ import os
 import json
 import time
 import requests
+import datetime
 import logging
 import logging.config
 
@@ -62,9 +63,13 @@ def get_soil_moisture_state():
         return 1.0
 
 
-def post_sensor_data(api_sensor_id, value):
+def post_sensor_data(api_sensor_id, capture_time, value):
     ''' Provide a helper to POST sensor data to the API. '''
-    payload = json.dumps({'value': value})
+    # The captured time is submitted to the API 
+    payload = json.dumps({
+        'value': value,
+        'created': capture_time,
+    })
 
     # Don't catch exceptions, let our caller do that.
     requests.post(
@@ -113,6 +118,10 @@ def main():
             'name': 'Ambient Temperature',
         })
 
+        # Standardise the capture time between all sensors. This is technically
+        # incorrect, but hey, we're not worried about seconds of precision.
+        capture_time = datetime.datetime.utcnow()
+
         # Poll each sensor and report to the API.
         for sensor in sensors:
             try:
@@ -121,7 +130,7 @@ def main():
                     sensor['value'],
                     sensor['name']
                 )
-                post_sensor_data(sensor['id'], sensor['value'])
+                post_sensor_data(sensor['id'], capture_time, sensor['value'])
             except requests.exceptions.RequestException as err:
                 log.error('Failed to POST sensor data: %s', err)
 

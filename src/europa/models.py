@@ -27,7 +27,7 @@ def to_datetime(source=None):
 
 class VesselSize(enum.Enum):
     ''' Define supported types for the Target Category type. '''
-    POT_TWELVE_CM = '12CM Plant Pot'
+    POT_TWELVE_CM = 'Pot (12CM)'
 
 
 class Vessel(db.Model):
@@ -138,6 +138,11 @@ class SensorData(db.Model):
 
     # Map the reverse for the relationship.
     sensor = db.relationship('Sensor', backref='data')
+
+    # Ensure that there is an index on the sensor ID.
+    __table_args__ = (
+        db.Index('sensor_id_idx', 'sensor_id'),
+    )
 
     def for_json(self):
         ''' Provide a result in a JSON serializable format. '''

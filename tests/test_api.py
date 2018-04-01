@@ -2,6 +2,7 @@
 
 import uuid
 import json
+import datetime
 import unittest
 import coverage
 
@@ -284,6 +285,7 @@ class EuropaApiTestCase(unittest.TestCase):
         ''' Ensures that sensor data can be added via the API. '''
         payload = json.dumps({
             'value': 100.00,
+            'created': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S'),
         })
         response = self.client.post(
             '/v1/sensor/1337/data',
