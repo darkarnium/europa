@@ -111,7 +111,7 @@ curl \
 
 ### References
 
-#### TDDP (TP-Link Device Debug Protocol)
+#### TP-Link Smart Home Protocol
 
 The integration with the TP-Link smartplug was performed using the results of
 research performed by Lubomir Stroetmann and Tobias Esser. The `encryption` and

@@ -14,7 +14,7 @@
 # limitations under the License.
 # 
 
-class TDDP(object):
+class TPLSmartHomeProtocol(object):
 	# Encryption for TP-Link Smart Home Protocol
 	# XOR Autokey Cipher with starting key = 171
 	# https://github.com/softScheck/tplink-smartplug/

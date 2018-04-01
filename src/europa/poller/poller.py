@@ -12,7 +12,7 @@ import Adafruit_DHT as DHT
 import w1thermsensor as W1
 
 # Require TDDP encryption / decryption integration.
-from .tddp import TDDP
+from .tpl_smart_home_protocol import TPLSmartHomeProtocol
 
 # Define, in seconds, how long between polling intervals.
 SLEEP_INTERVAL = 300
@@ -76,8 +76,8 @@ def get_light_state():
     ''' Provides a helper to get the state of the external light (boolean). '''
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((SENSOR_IP_LIGHT, 9999))
-    sock.send(TDDP.encrypt('{"system":{"get_sysinfo":{}}}'))
-    result = json.loads(TDDP.decrypt(sock.recv(2048)[4:]))
+    sock.send(TPLSmartHomeProtocol.encrypt('{"system":{"get_sysinfo":{}}}'))
+    result = json.loads(TPLSmartHomeProtocol.decrypt(sock.recv(2048)[4:]))
 
     # Extract the relevant field from the result and convert to a float. Where
     # 1.0 is 'Light On' and 0.0 is 'Light Off'.
@@ -112,6 +112,9 @@ def main():
         format='%(asctime)s - %(process)d - [%(levelname)s] %(message)s'
     )
     log = logging.getLogger(__name__)
+
+    # Print external sensor IPs.
+    log.info('External light sensor configured as IP %s', SENSOR_IP_LIGHT)
 
     # Print GPIO pinout.
     log.info('Soil sensor configured as GPIO pin %s', SENSOR_PIN_SOIL)
