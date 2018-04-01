@@ -1,6 +1,6 @@
 import os
-import time
 import json
+import time
 import socket
 import requests
 import datetime
@@ -10,9 +10,13 @@ import logging.config
 import RPi.GPIO as GPIO
 import Adafruit_DHT as DHT
 import w1thermsensor as W1
+import pyHS100 as SmartHome
 
 # Define, in seconds, how long between polling intervals.
 SLEEP_INTERVAL = 300
+
+# Define IP addresses for external sensors.
+SENSOR_IP_LIGHT = '192.0.2.0'
 
 # Define pin numbers for GPIO reads.
 SENSOR_PIN_SOIL = 2
@@ -23,6 +27,7 @@ API_SOIL_MOISTURE = 1
 API_SOIL_TEMPERATURE = 2
 API_AMBIENT_HUMIDITY = 3
 API_AMBIENT_TEMPERATURE = 4
+API_LIGHT_STATE = 5
 
 # Define API endpoint.
 API_BASE_URI = 'http://127.0.0.1:5000/v1'
@@ -65,6 +70,17 @@ def get_soil_moisture_state():
         return 1.0
 
 
+def get_light_state():
+    ''' Provides a helper to get the external light state (boolean). '''
+    plug = SmartHome.SmartPlug(SENSOR_IP_LIGHT)
+
+    # Where 0.0 is 'Light Off' and 1.0 is 'Light On'.
+    if plug.get_sysinfo()['relay_state'] == 0:
+        return 0.0
+    else:
+        return 1.0
+
+
 def post_sensor_data(api_sensor_id, capture_time, value):
     ''' Provide a helper to POST sensor data to the API. '''
     # The captured time is submitted to the API 
@@ -90,6 +106,9 @@ def main():
         format='%(asctime)s - %(process)d - [%(levelname)s] %(message)s'
     )
     log = logging.getLogger(__name__)
+
+    # Print external sensor IPs.
+    log.info('External light sensor configured as IP %s', SENSOR_IP_LIGHT)
 
     # Print GPIO pinout.
     log.info('Soil sensor configured as GPIO pin %s', SENSOR_PIN_SOIL)
@@ -124,6 +143,11 @@ def main():
             'id': API_AMBIENT_TEMPERATURE, 
             'value': get_ambient_temperature(),
             'name': 'Ambient Temperature',
+        })
+        sensors.append({
+            'id': API_LIGHT_STATE, 
+            'value': get_light_state(),
+            'name': 'Light State',
         })
 
         # Poll each sensor and report to the API.

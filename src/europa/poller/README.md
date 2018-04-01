@@ -23,6 +23,10 @@ The `Adafruit-DHT` module is used to read sensor data from the AM2302. It should
 be noted that `Adafruit-DHT` cannot be installed via PIP. This should instead be
 installed from the GitHub source - via `python3 setup.py install`.
 
+#### `pyhs100`
+
+The `pyhs100` module is used to read data from TP-Link SmartHome devices.
+
 ### Initial Setup
 
 In order to use the Poller, sensors must already have been setup in the API.
