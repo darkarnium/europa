@@ -66,13 +66,6 @@ curl \
   -d '{"name": "Humidity", "units": "%"}' \
   http://127.0.0.1:5000/v1/sensor/category
 
-# Setup a new external output category.
-curl \
-  -X POST \
-  -H 'Content-Type: application/json' \
-  -d '{"name": "Device", "units": "Is Active"}' \
-  http://127.0.0.1:5000/v1/sensor/category
-
 # Setup a new Soil Moisture sensor.
 curl \
   -X POST \
@@ -101,42 +94,4 @@ curl \
   -d '{"name": "Ambient", "category": 1, "vessel": 1}' \
   http://127.0.0.1:5000/v1/sensor
 
-# Setup a new external light sensor.
-curl \
-  -X POST \
-  -H 'Content-Type: application/json' \
-  -d '{"name": "Light", "category": 4, "vessel": 1}' \
-  http://127.0.0.1:5000/v1/sensor
-```
-
-### References
-
-#### TP-Link Smart Home Protocol
-
-The integration with the TP-Link smartplug was performed using the results of
-research performed by Lubomir Stroetmann and Tobias Esser. The `encryption` and
-`decryption` routines were copied directly from their PoC, which can be found
-from the below website.
-
-  * https://www.softscheck.com/en/reverse-engineering-tp-link-hs110/
-
-The `SmartHomeProtocol` class inside of `poller.py` is covered under the
-following licence.
-
-```
-# by Lubomir Stroetmann
-# Copyright 2016 softScheck GmbH 
-# 
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-#      http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# 
 ```
