@@ -120,7 +120,7 @@ def main():
 
         # Standardise the capture time between all sensors. This is technically
         # incorrect, but hey, we're not worried about seconds of precision.
-        capture_time = datetime.datetime.utcnow()
+        capture_time = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S')
 
         # Poll each sensor and report to the API.
         for sensor in sensors:
