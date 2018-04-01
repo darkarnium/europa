@@ -97,6 +97,12 @@ def main():
     # Poll until heat-death of the universe... Or, y'know, until we crash.
     log.info('Entering polling loop')
     while True:
+        # Standardise the capture time between all sensors. This is technically
+        # incorrect, but hey, we're not that worried about timing precision.
+        capture_time = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S')
+
+        # This doesn't need to be initialised every loop, but for simplicity
+        # we'll keep it here.
         sensors = []
         sensors.append({
             'id': API_SOIL_MOISTURE, 
@@ -118,10 +124,6 @@ def main():
             'value': get_ambient_temperature(),
             'name': 'Ambient Temperature',
         })
-
-        # Standardise the capture time between all sensors. This is technically
-        # incorrect, but hey, we're not worried about seconds of precision.
-        capture_time = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S')
 
         # Poll each sensor and report to the API.
         for sensor in sensors:

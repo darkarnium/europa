@@ -39,20 +39,20 @@ def create_sensor():
     document = request.get_json()
 
     # Ensure the provided vessel exists, or 404.
-    vessel = Vessel.query.filter(
+    _ = Vessel.query.filter(
         Vessel.id == document.get('vessel'),
     ).first_or_404()
 
     # Ensure the provided category exists, or 404.
-    category = SensorCategory.query.filter(
+    _ = SensorCategory.query.filter(
         SensorCategory.id == document.get('category'),
     ).first_or_404()
 
     # Create a new plant from the provided payload.
     candidate = Sensor(
         name=document.get('name'),
-        vessel_id=vessel.id,
-        category_id=category.id,
+        vessel_id=document.get('vessel'),
+        category_id=document.get('category'),
     )
     db.session.add(candidate)
 
@@ -94,18 +94,20 @@ def update_sensor(sensor_id):
     document = request.get_json()
     if document.get('name'):
         candidate.name = document.get('name')
+
+    # Ensure the provided category exists, or 404.
     if document.get('category'):
-        # Ensure the provided category exists, or 404.
-        category = SensorCategory.query.filter(
+        _ = SensorCategory.query.filter(
             SensorCategory.id == document.get('category'),
         ).first_or_404()
-        candidate.category_id = category.id
+        candidate.category_id = document.get('category')
+
+    # Ensure the provided vessel exists, or 404.
     if document.get('vessel'):
-        # Ensure the provided vessel exists, or 404.
-        vessel = Vessel.query.filter(
+        _ = Vessel.query.filter(
             Vessel.id == document.get('vessel'),
         ).first_or_404()
-        candidate.vessel_id = vessel.id
+        candidate.vessel_id = document.get('vessel')
 
     try:
         db.session.commit()

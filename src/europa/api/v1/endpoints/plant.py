@@ -87,12 +87,13 @@ def update_plant(plant_id):
         candidate.name = document.get('name')
     if document.get('description'):
         candidate.description = document.get('description')
+    
+    # Ensure the provided vessel exists, or 404.
     if document.get('vessel'):
-        # Ensure the provided vessel exists, or 404.
-        vessel = Vessel.query.filter(
+        _ = Vessel.query.filter(
             Vessel.id == document.get('vessel'),
         ).first_or_404()
-        candidate.vessel_id = vessel.id
+        candidate.vessel_id = document.get('vessel')
 
     try:
         db.session.commit()

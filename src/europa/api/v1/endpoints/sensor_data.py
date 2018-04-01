@@ -22,7 +22,8 @@ from europa.api.v1 import router
 @decorators.validated(fields=['value', 'created'])
 def create_sensor_data(sensor_id):
     ''' Attempt to create a new sensor data entry. '''
-    sensor = Sensor.query.filter(
+    # Ensure the associated sensor exists.
+    _ = Sensor.query.filter(
         Sensor.id == sensor_id,
         Sensor.deleted == None,
     ).first_or_404()
@@ -56,7 +57,7 @@ def create_sensor_data(sensor_id):
 def retrieve_sensor_data(sensor_id):
     ''' Attempt to retrieve data for a given sensor. '''
     candidates = SensorData.query.filter(
-        Sensor.id == sensor_id,
+        SensorData.sensor_id == sensor_id,
         Sensor.deleted == None,
         SensorData.created >= (
             datetime.datetime.utcnow() - datetime.timedelta(days=1)
