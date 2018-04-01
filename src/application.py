@@ -18,4 +18,4 @@ if __name__ == '__main__':
         db.create_all()
 
     # Let's go!
-    application.run(debug=False)
+    application.run(debug=False, host='0.0.0.0')
