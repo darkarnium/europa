@@ -56,11 +56,12 @@ def get_soil_moisture_state():
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(SENSOR_PIN_SOIL, GPIO.IN)
 
-    # Change the output from Boolean to Binary.
+    # Change the output from Boolean to Binary. Where 1.0 is 'moisture required'
+    # and 0.0 is 'moisture not required'.
     if GPIO.input(SENSOR_PIN_SOIL):
-        return 0.0
-    else:
         return 1.0
+    else:
+        return 0.0
 
 
 def post_sensor_data(api_sensor_id, capture_time, value):

@@ -36,7 +36,7 @@ def create_sensor_data(sensor_id):
     # Create a new sensor data entry from the provided payload.
     candidate = SensorData(
         value=value,
-        sensor_id=sensor.id,
+        sensor_id=sensor_id,
         created=to_datetime(document.get('created'))
     )
     db.session.add(candidate)
