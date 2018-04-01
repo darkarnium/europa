@@ -99,7 +99,7 @@ def main():
     while True:
         # Standardise the capture time between all sensors. This is technically
         # incorrect, but hey, we're not that worried about timing precision.
-        capture_time = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S')
+        capture_time = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:00')
 
         # This doesn't need to be initialised every loop, but for simplicity
         # we'll keep it here.
