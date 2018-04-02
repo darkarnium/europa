@@ -1,4 +1,4 @@
-## Europa
+![](https://github.com/darkarnium/europa/raw/master/docs/images/europa.png?raw=true)
 
 This repository contains the API and UI service for the Europa project.
 
@@ -17,15 +17,22 @@ This project has been built with the following equipment:
   * AM2302 temperature and humidity sensor (ambient).
   * TP-Link HS-100 Smartplug.
 
+### API Security
+
+There isn't any. It's a free for all!
+
+### UI
+
+The UI in its current form is very simple, it simply uses jQuery, Bootstrap,
+Moment.js, popper.js, and Chart.js to graph the last 24-hours of sensor data.
+
+![](https://github.com/darkarnium/europa/raw/master/docs/images/ui-capture.png?raw=true)
+
 ### Polling
 
 In order to populate the API with data from sensors, some form of poller is
 required. For completeness, a sample poller has been included in this repository
 with additional information available under `src/poller/README.md`.
-
-### API Security.
-
-There isn't any. It's a free for all!
 
 ### Samples
 
