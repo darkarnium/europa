@@ -37,17 +37,16 @@
     <script src="{{ url_for('.static', filename='js/chart-2.7.2.min.js') }}"></script>
 
     <script>
-      $.getJSON("/api/v1/sensors", function(sensors) {
-        
-        // Create a new Chart for each sensor.
-        $.each(sensors, function(idx, entry) {
-          $("#chart-container").append(
-            "<canvas class='my-4' id='chart" + entry['id'] + "' width='900' height='380'></canvas>"
-          );
+    window.onload = function () {
+      charts = []
 
-          // Fetch a stream of data for this sensor.
+      // Fetch all sensors.
+      $.getJSON("/api/v1/sensors", function(sensors) {
+        $.each(sensors, function(idx, entry) {
           labels = []
           datapoints = []
+
+          // Fetch and format data for this sensor.
           $.getJSON("/api/v1/sensor/" + entry['id'] + "/data", function(sensor) {
             $.each(sensor, function(idx, datapoint) {
               labels.push(new Date(datapoint['created']).toLocaleString())
@@ -60,30 +59,37 @@
             });
           });
 
-          // Initialize the new chart.
-          new Chart(
-            document.getElementById("chart" + entry['id']).getContext("2d"),
+          // Push the data ready to create the chart.
+          charts.push({
+            labels: labels,
+            datasets: [{
+              label: entry['vessel'],
+              fill: true,
+              data: datapoints
+            }]
+          })
+        });
+      });
+
+      // Create all graphs.
+      $.each(charts, function(idx, entry) {
+        $("#chart-container").append(
+            "<canvas id='chart" + idx + "' width='900' height='380'></canvas>"
+          );
+          var ctx = document.getElementById("chart" + idx).getContext("2d");
+          new Chart(ctx).Line(
+            data,
             {
-              type: 'line',
-              data: {
-                labels: labels,
-                datasets: [{
-                  label: entry['vessel'],
-                  fill: true,
-                  data: datapoints
-                }]
-              },
               options: {
                 responsive: true,
                 title: {
-                  display: true,
-                  text: entry['name'] + " " + entry['category']
+                  display: true
                 }
               }
             }
           );
-        });
       });
+    }
     </script>
   </body>
 </html>
