@@ -7,7 +7,7 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-primary bg-dark">
       <a class="navbar-brand" href="#">Europa</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarPrimary" aria-controls="navbarPrimary" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -38,56 +38,89 @@
 
     <script>
     window.onload = function () {
-      charts = []
+      labels = {}
+      datapoints = {}
 
       // Fetch all sensors.
       $.getJSON("/api/v1/sensors", function(sensors) {
-        $.each(sensors, function(idx, entry) {
-          labels = []
-          datapoints = []
+        $.each(sensors, function(sensor) {
+          labels[sensors[sensor]['id']] = []
+          datapoints[sensors[sensor]['id']] = []
 
           // Fetch and format data for this sensor.
-          $.getJSON("/api/v1/sensor/" + entry['id'] + "/data", function(sensor) {
-            $.each(sensor, function(idx, datapoint) {
-              labels.push(new Date(datapoint['created']).toLocaleString())
-              datapoints.push(
+          $.getJSON("/api/v1/sensor/" + sensors[sensor]['id'] + "/data", function(entries) {
+            $.each(entries, function(entry) {
+              labels[sensors[sensor]['id']].push(
+                new Date(entries[entry]['created']).toLocaleString()
+              )
+              datapoints[sensors[sensor]['id']].push(
                 {
-                  t: new Date(datapoint['created']),
-                  y: datapoint['value']
+                  t: new Date(entries[entry]['created']),
+                  y: entries[entry]['value']
                 }
               )
             });
-          });
-
-          // Push the data ready to create the chart.
-          charts.push({
-            labels: labels,
-            datasets: [{
-              label: entry['vessel'],
-              fill: true,
-              data: datapoints
-            }]
-          })
-        });
-      });
-
-      // Create all graphs.
-      $.each(charts, function(idx, entry) {
-        $("#chart-container").append(
-            "<canvas id='chart" + idx + "' width='900' height='380'></canvas>"
-          );
-          var ctx = document.getElementById("chart" + idx).getContext("2d");
-          new Chart(ctx).Line(
-            data,
-            {
-              options: {
-                responsive: true,
-                title: {
-                  display: true
+       
+            // Push the data ready to create the chart.
+            $("#chart-container").append(
+              "<canvas class='animated fadeIn' id='chart" + sensors[sensor]['id'] + "' width='900' height='380'></canvas>"
+            );
+            new Chart(
+              document.getElementById("chart" + sensors[sensor]['id']).getContext("2d"),
+              {
+                type: 'line',
+                data: {
+                  labels: labels[sensors[sensor]['id']],
+                  datasets: [{
+                    label: sensors[sensor]['vessel'],
+					          borderColor: "#439D81",
+                    backgroundColor: "#439D81B3",
+                    fill: true,
+                    data: datapoints[sensors[sensor]['id']]
+                  }]
+                }
+              },
+              {
+                options: {
+                  responsive: true,
+                  title: {
+                    display: true
+                  },
+                  scales: {
+                    xAxes: [{
+                      type: 'time',
+                      distribution: 'series',
+                      time: {
+                        displayFormats: {
+                          minute: 'h:mm a'
+                        }
+                      },
+                      display: true,
+                      scaleLabel: {
+                        display: true,
+                        labelString: 'Timestamp'
+                      },
+                      ticks: {
+                        major: {
+                          fontStyle: 'bold',
+                          fontColor: '#546372'
+                        }
+                      }
+                    }],
+                    yAxes: [{
+                      display: true,
+                      scaleLabel: {
+                        display: true,
+                        labelString: sensors[sensor]['category'],
+                        fontColor: '#546372'
+                      }
+                    }]
+                  }
                 }
               }
-            }
-          );
+            );
+          });
+        });
       });
     }
     </script>
