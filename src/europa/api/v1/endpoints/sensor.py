@@ -20,18 +20,6 @@ from europa.api.v1 import exceptions
 from europa.api.v1 import router
 
 
-@router.route('/sensors', methods=['GET'])
-def retrieve_sensors():
-    ''' Attempt to retrive sensors the user is authorised to access. '''
-    candidates = Sensor.query.filter(
-        Sensor.deleted == None,
-    ).all()
-
-    # Construct a JSON friendly response.
-    sensors = [candidate.for_json() for candidate in candidates]
-    return jsonify(sensors)
-
-
 @router.route('/sensor', methods=['POST'])
 @decorators.validated(fields=['name', 'vessel', 'category'])
 def create_sensor():
@@ -67,6 +55,18 @@ def create_sensor():
     response = jsonify(candidate.for_json())
     response.status_code = 201
     return response
+
+
+@router.route('/sensors', methods=['GET'])
+def retrieve_sensors():
+    ''' Attempt to retrive sensors the user is authorised to access. '''
+    candidates = Sensor.query.filter(
+        Sensor.deleted == None,
+    ).order_by(Sensor.id).all()
+
+    # Construct a JSON friendly response.
+    sensors = [candidate.for_json() for candidate in candidates]
+    return jsonify(sensors)
 
 
 @router.route('/sensor/<int:sensor_id>', methods=['GET'])

@@ -17,17 +17,6 @@ from europa.api.v1 import exceptions
 from europa.api.v1 import router
 
 
-@router.route('/vessel', methods=['GET'])
-def retrieve_vessels():
-    ''' Attempt to retrive vessels the user is authorised to access. '''
-    candidates = Vessel.query.filter(
-        Vessel.deleted == None,
-    ).all()
-
-    # Construct a JSON friendly response.
-    vessels = [candidate.for_json() for candidate in candidates]
-    return jsonify(vessels)
-
 @router.route('/vessel', methods=['POST'])
 @decorators.validated(fields=['name', 'location'])
 def create_vessel():
@@ -53,6 +42,18 @@ def create_vessel():
     response = jsonify(candidate.for_json())
     response.status_code = 201
     return response
+
+
+@router.route('/vessel', methods=['GET'])
+def retrieve_vessels():
+    ''' Attempt to retrive vessels the user is authorised to access. '''
+    candidates = Vessel.query.filter(
+        Vessel.deleted == None,
+    ).order_by(Vessel.id).all()
+
+    # Construct a JSON friendly response.
+    vessels = [candidate.for_json() for candidate in candidates]
+    return jsonify(vessels)
 
 
 @router.route('/vessel/<int:vessel_id>', methods=['GET'])

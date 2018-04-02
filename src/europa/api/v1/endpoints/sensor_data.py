@@ -62,7 +62,7 @@ def retrieve_sensor_data(sensor_id):
         SensorData.created >= (
             datetime.datetime.utcnow() - datetime.timedelta(days=1)
         )
-    ).all()
+    ).order_by(SensorData.created).all()
 
     # Construct a JSON friendly response.
     sensors = [candidate.for_json() for candidate in candidates]

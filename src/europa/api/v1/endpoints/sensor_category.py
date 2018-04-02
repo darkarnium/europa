@@ -16,18 +16,6 @@ from europa.api.v1 import exceptions
 from europa.api.v1 import router
 
 
-@router.route('/sensor/categories', methods=['GET'])
-def retrieve_sensor_categories():
-    ''' Attempt to retrive sensor cagegories the user can access. '''
-    candidates = SensorCategory.query.filter(
-        SensorCategory.deleted == None,
-    ).all()
-
-    # Construct a JSON friendly response.
-    categories = [candidate.for_json() for candidate in candidates]
-    return jsonify(categories)
-
-
 @router.route('/sensor/category', methods=['POST'])
 @decorators.validated(fields=['name', 'units'])
 def create_sensor_category():
@@ -52,6 +40,18 @@ def create_sensor_category():
     response = jsonify(candidate.for_json())
     response.status_code = 201
     return response
+
+
+@router.route('/sensor/categories', methods=['GET'])
+def retrieve_sensor_categories():
+    ''' Attempt to retrive sensor cagegories the user can access. '''
+    candidates = SensorCategory.query.filter(
+        SensorCategory.deleted == None,
+    ).order_by(SensorCategory.id).all()
+
+    # Construct a JSON friendly response.
+    categories = [candidate.for_json() for candidate in candidates]
+    return jsonify(categories)
 
 
 @router.route('/sensor/category/<int:sensor_category_id>', methods=['GET'])

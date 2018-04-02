@@ -17,17 +17,6 @@ from europa.api.v1 import exceptions
 from europa.api.v1 import router
 
 
-@router.route('/plants', methods=['GET'])
-def retrieve_plants():
-    ''' Attempt to retrive plants the user is authorised to access. '''
-    candidates = Plant.query.filter(
-        Plant.deleted == None,
-    ).all()
-
-    # Construct a JSON friendly response.
-    plants = [candidate.for_json() for candidate in candidates]
-    return jsonify(plants)
-
 @router.route('/plant', methods=['POST'])
 @decorators.validated(fields=['name', 'vessel', 'description'])
 def create_plant():
@@ -58,6 +47,18 @@ def create_plant():
     response = jsonify(candidate.for_json())
     response.status_code = 201
     return response
+
+
+@router.route('/plants', methods=['GET'])
+def retrieve_plants():
+    ''' Attempt to retrive plants the user is authorised to access. '''
+    candidates = Plant.query.filter(
+        Plant.deleted == None,
+    ).order_by(Plant.id).all()
+
+    # Construct a JSON friendly response.
+    plants = [candidate.for_json() for candidate in candidates]
+    return jsonify(plants)
 
 
 @router.route('/plant/<int:plant_id>', methods=['GET'])
