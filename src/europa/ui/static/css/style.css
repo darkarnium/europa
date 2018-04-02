@@ -1,3 +1,8 @@
+.navbar-brand {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 18px;
+}
+
 .container {
   padding-top: 15px;
 }
