@@ -35,6 +35,7 @@
     <script src="{{ url_for('.static', filename='js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ url_for('.static', filename='js/popper-1.12.9.min.js') }}"></script>
     <script src="{{ url_for('.static', filename='js/bootstrap-4.0.0.min.js') }}"></script>
+    <script src="{{ url_for('.static', filename='js/moment-2.22.0.min.js') }}"></script>
     <script src="{{ url_for('.static', filename='js/chart-2.7.2.min.js') }}"></script>
 
     <script>
@@ -79,41 +80,31 @@
                     fill: true,
                     data: datapoints[sensors[sensor]['id']]
                   }]
-                }
-              },
-              {
+                },
                 options: {
                   responsive: true,
+                  legend: {
+                    position: 'bottom',
+                  },
                   title: {
-                    display: true
+                    display: true,
+                    text: sensors[sensor]['name'] + " " + sensors[sensor]['category']
                   },
                   scales: {
                     xAxes: [{
                       type: 'time',
                       distribution: 'series',
-                      time: {
-                        displayFormats: {
-                          minute: 'h:mm a'
-                        }
-                      },
                       display: true,
                       scaleLabel: {
                         display: true,
                         labelString: 'Timestamp'
-                      },
-                      ticks: {
-                        major: {
-                          fontStyle: 'bold',
-                          fontColor: '#546372'
-                        }
                       }
                     }],
                     yAxes: [{
                       display: true,
                       scaleLabel: {
                         display: true,
-                        labelString: sensors[sensor]['category'],
-                        fontColor: '#546372'
+                        labelString: sensors[sensor]['category']
                       }
                     }]
                   }
